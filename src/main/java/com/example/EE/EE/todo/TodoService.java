@@ -14,15 +14,15 @@ public class TodoService {
 
 
     static {
-        todos.add(new Todo(1, "in28Minutes", "Learn AWS", LocalDate.now().plusYears(1), false));
-        todos.add(new Todo(2, "in28Minutes", "Learn DevOps", LocalDate.now().plusYears(2), false));
-        todos.add(new Todo(3, "in28Minutes", "Learn Full Stack Development", LocalDate.now().plusYears(3), false));
+        todos.add(new Todo(1, "johnjake14", "Learn AWS", LocalDate.now().plusYears(1), false));
+        todos.add(new Todo(2, "johnjake14", "Learn DevOps", LocalDate.now().plusYears(2), false));
+        todos.add(new Todo(3, "johnjake14", "Learn Full Stack Development", LocalDate.now().plusYears(3), false));
 
     }
 
 
-    public void addToDo(String description, LocalDate date){
-        todos.add(new Todo(todos.size()+1, "in28Minutes", description, date, false));
+    public void addToDo(String description, LocalDate date, String username){
+        todos.add(new Todo(todos.size()+1, username, description, date, false));
     }
 
     public void updateToDo(int id){
@@ -35,6 +35,7 @@ public class TodoService {
         todos.removeIf(predicate);
     }
     public List<Todo> findByUsername(String username){
-        return todos;
+        Predicate<? super Todo> predicate = todo -> todo.getUsername().equalsIgnoreCase(username);
+        return todos.stream().filter(predicate).toList();
     }
 }

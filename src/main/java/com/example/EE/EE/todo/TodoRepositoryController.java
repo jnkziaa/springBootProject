@@ -1,32 +1,36 @@
 package com.example.EE.EE.todo;
 
-import com.example.EE.EE.login.WelcomeController;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class TodoController {
+@Controller
+public class TodoRepositoryController {
     private TodoService todoService;
-    public TodoController(TodoService todoService) {
+    @Autowired
+    private TodoRepository todoRepository;
+    public TodoRepositoryController(TodoService todoService, TodoRepository todoRepository) {
         this.todoService = todoService;
+        this.todoRepository = todoRepository;
     }
-    // /list-todos
     @RequestMapping("list-todos")
+    // /list-todos
     public String listAllTodos(ModelMap modelMap){
         String username = getLoggedinUsername(modelMap);
-        List<Todo> todos = todoService.findByUsername(username);
+        List<Todo> todos = todoRepository.findByUsername(username);
         modelMap.put("todos", todos);
         return "listTodos";
     }
+
 
     @RequestMapping(value = "add-todo", method = RequestMethod.GET)
     public String showNewToDoPage(ModelMap modelMap){
